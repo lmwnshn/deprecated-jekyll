@@ -1,0 +1,60 @@
+---
+layout: default
+---
+
+Note: if you're looking for intelligent commentary, you're in the wrong place.
+<br>
+All views are my own, etc. I might not hold the same views in $CURRENT_YEAR.
+
+{% if paginator.posts %}
+
+  <!-- This loops through the paginated posts -->
+  <div class="posts">
+    {% for post in paginator.posts %}
+      {% capture year_curr %}{{ post.date | date: "%Y"}}{% endcapture %}
+      {% capture year_prev %}{{ post.previous.date | date: "%Y"}}{% endcapture %}
+
+      {% if forloop.first %}
+      <h2>{{ year_curr }}</h2>
+      <ul>
+      {% endif %}
+
+      <li>
+        <span class="date">{{ post.date | date: "%b %d" }}</span>
+        <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        {% if post.excerpt %}
+        {{ post.excerpt }}
+        {% endif %}
+      </li>
+
+      {% if forloop.last %}
+        </ul>
+      {% elsif year_curr != year_prev %}
+        </ul>
+        <h2>{{ year_prev }}</h2>
+        <ul>
+      {% endif %}
+     
+    {% endfor %}
+  </div>
+
+  <!-- Pagination links -->
+  <br>
+  {% if paginator.previous_page or paginator.next_page %}
+  <div class="pagination">
+    <span class="page_number"><b>Page {{ paginator.page }} of {{ paginator.total_pages }}</b></span>
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path }}" class="previous">Newer</a>
+    {% else %}
+      <span class="previous">Newer</span>
+    {% endif %}
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path }}" class="next">Older</a>
+    {% else %}
+      <span class="next">Older</span>
+    {% endif %}
+  </div>
+  {% endif %}
+{% else %}
+  <center><img src="/images/creatures/under_construction.jpg"/></center>
+{% endif %}
